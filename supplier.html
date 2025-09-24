@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manajemen Supplier - ERP Sistem Logistik</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    
+    .breadcrumb {
+      color: #ecf0f1;
+      font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+      color: #ecf0f1;
+      text-decoration: none;
+    }
+    
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    
+    nav {
+      background-color: #34495e;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .nav-menu {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    nav a:hover, nav a.active {
+      background-color: #2c3e50;
+      transform: translateY(-2px);
+    }
+    
+    main {
+      padding: 40px 0;
+      min-height: calc(100vh - 200px);
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .page-header h2 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .supplier-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+    
+    .supplier-card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .supplier-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .supplier-card .icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    
+    .supplier-card .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+    
+    .supplier-card .label {
+      color: #7f8c8d;
+      font-size: 1rem;
+    }
+    
+    .tabs {
+      display: flex;
+      background: white;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 0;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 20px;
+      background: #ecf0f1;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .tab.active {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+    
+    .tab:hover:not(.active) {
+      background: #d5dbdb;
+    }
+    
+    .tab-content {
+      background: white;
+      padding: 30px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .tab-pane {
+      display: none;
+    }
+    
+    .tab-pane.active {
+      display: block;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+    }
+    
+    .search-box input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .search-box input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #27ae60, #229954);
+      color: white;
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+    }
+    
+    .btn-warning {
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      color: white;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .supplier-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    
+    .supplier-table th {
+      background: linear-gradient(135deg, #34495e, #2c3e50);
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    .supplier-table td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .supplier-table tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .status {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .status.active {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .status.inactive {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    .status.pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    .rating {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .stars {
+      color: #f39c12;
+    }
+    
+    .supplier-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 25px;
+    }
+    
+    .supplier-profile {
+      background: white;
+      border-radius: 12px;
+      padding: 25px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .supplier-profile:hover {
+      transform: translateY(-5px);
+    }
+    
+    .supplier-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    
+    .supplier-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-right: 15px;
+    }
+    
+    .supplier-name {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+    
+    .supplier-category {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+    
+    .supplier-details {
+      margin-bottom: 20px;
+    }
+    
+    .supplier-details p {
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+    
+    .supplier-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .modal-header h3 {
+      color: #2c3e50;
+      font-size: 1.5rem;
+    }
+    
+    .close {
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #999;
+    }
+    
+    .close:hover {
+      color: #333;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    footer {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+    
+    @media (max-width: 768px) {
+      .supplier-overview {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      
+      .tabs {
+        flex-direction: column;
+      }
+      
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-box {
+        max-width: none;
+      }
+      
+      .supplier-table {
+        font-size: 0.9rem;
+      }
+      
+      .supplier-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .modal-content {
+        margin: 2% auto;
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>🚚 Manajemen Supplier</h1>
+        </div>
+        <div class="breadcrumb">
+          <a href="index.html">Dashboard</a> / Supplier
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <div class="nav-menu">
+        <a href="index.html">📊 Dashboard</a>
+        <a href="inventory.html">📦 Inventory</a>
+        <a href="finance.html">💰 Keuangan</a>
+        <a href="hr.html">👥 SDM</a>
+        <a href="customer.html">🤝 Pelanggan</a>
+        <a href="supplier.html" class="active">🚚 Supplier</a>
+        <a href="reports.html">📈 Laporan</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h2>Manajemen Supplier</h2>
+        <p>Kelola supplier, purchase order, dan vendor management</p>
+      </div>
+
+      <div class="supplier-overview">
+        <div class="supplier-card">
+          <div class="icon">🏢</div>
+          <div class="number" id="totalSuppliers">18</div>
+          <div class="label">Total Supplier</div>
+        </div>
+        <div class="supplier-card">
+          <div class="icon">✅</div>
+          <div class="number" id="activeSuppliers">15</div>
+          <div class="label">Supplier Aktif</div>
+        </div>
+        <div class="supplier-card">
+          <div class="icon">📋</div>
+          <div class="number" id="totalPurchaseOrders">24</div>
+          <div class="label">Purchase Orders</div>
+        </div>
+        <div class="supplier-card">
+          <div class="icon">⭐</div>
+          <div class="number" id="averageRating">4.2</div>
+          <div class="label">Rata-rata Rating</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(event, 'suppliers')">Supplier</button>
+        <button class="tab" onclick="switchTab(event, 'purchases')">Purchase Orders</button>
+        <button class="tab" onclick="switchTab(event, 'evaluations')">Evaluasi</button>
+      </div>
+
+      <div class="tab-content">
+        <!-- Suppliers Tab -->
+        <div id="suppliers" class="tab-pane active">
+          <div class="controls">
+            <div class="search-box">
+              <input type="text" id="searchSupplier" placeholder="Cari supplier..." onkeyup="searchSuppliers()">
+            </div>
+            <button class="btn btn-primary" onclick="openModal('supplierModal')">+ Tambah Supplier</button>
+          </div>
+          
+          <div class="supplier-grid" id="supplierGrid">
+            <!-- Supplier cards will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Purchase Orders Tab -->
+        <div id="purchases" class="tab-pane">
+          <div class="controls">
+            <h3>Purchase Orders</h3>
+            <button class="btn btn-success" onclick="openModal('purchaseModal')">+ Buat PO</button>
+          </div>
+          
+          <table class="supplier-table">
+            <thead>
+              <tr>
+                <th>No. PO</th>
+                <th>Supplier</th>
+                <th>Tanggal</th>
+                <th>Total</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="purchaseTableBody">
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Evaluations Tab -->
+        <div id="evaluations" class="tab-pane">
+          <div class="controls">
+            <h3>Evaluasi Supplier</h3>
+            <button class="btn btn-warning" onclick="openModal('evaluationModal')">+ Tambah Evaluasi</button>
+          </div>
+          
+          <table class="supplier-table">
+            <thead>
+              <tr>
+                <th>Supplier</th>
+                <th>Periode</th>
+                <th>Rating</th>
+                <th>Kualitas</th>
+                <th>Ketepatan</th>
+                <th>Catatan</th>
+              </tr>
+            </thead>
+            <tbody id="evaluationTableBody">
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Supplier Modal -->
+  <div id="supplierModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Tambah Supplier</h3>
+        <span class="close" onclick="closeModal('supplierModal')">&times;</span>
+      </div>
+      <form onsubmit="addSupplier(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="supplierName">Nama Supplier</label>
+            <input type="text" id="supplierName" required>
+          </div>
+          <div class="form-group">
+            <label for="supplierCategory">Kategori</label>
+            <select id="supplierCategory" required>
+              <option value="">Pilih Kategori</option>
+              <option value="Elektronik">Elektronik</option>
+              <option value="Pakaian">Pakaian</option>
+              <option value="Makanan">Makanan</option>
+              <option value="Peralatan">Peralatan</option>
+              <option value="Bahan Baku">Bahan Baku</option>
+              <option value="Jasa">Jasa</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="supplierEmail">Email</label>
+            <input type="email" id="supplierEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="supplierPhone">Telepon</label>
+            <input type="tel" id="supplierPhone" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="supplierContact">Contact Person</label>
+            <input type="text" id="supplierContact" required>
+          </div>
+          <div class="form-group">
+            <label for="supplierRating">Rating (1-5)</label>
+            <input type="number" id="supplierRating" min="1" max="5" step="0.1" value="3.0">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="supplierAddress">Alamat</label>
+          <textarea id="supplierAddress" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="supplierNotes">Catatan</label>
+          <textarea id="supplierNotes" rows="3"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Simpan Supplier</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Purchase Order Modal -->
+  <div id="purchaseModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Buat Purchase Order</h3>
+        <span class="close" onclick="closeModal('purchaseModal')">&times;</span>
+      </div>
+      <form onsubmit="addPurchaseOrder(event)">
+        <div class="form-group">
+          <label for="purchaseSupplier">Supplier</label>
+          <select id="purchaseSupplier" required>
+            <option value="">Pilih Supplier</option>
+          </select>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="purchaseDate">Tanggal PO</label>
+            <input type="date" id="purchaseDate" required>
+          </div>
+          <div class="form-group">
+            <label for="purchaseTotal">Total (Rp)</label>
+            <input type="number" id="purchaseTotal" min="0" step="1000" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="purchaseDeliveryDate">Tanggal Pengiriman</label>
+            <input type="date" id="purchaseDeliveryDate" required>
+          </div>
+          <div class="form-group">
+            <label for="purchaseStatus">Status</label>
+            <select id="purchaseStatus" required>
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="shipped">Shipped</option>
+              <option value="delivered">Delivered</option>
+              <option value="cancelled">Cancelled</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="purchaseDescription">Deskripsi</label>
+          <textarea id="purchaseDescription" rows="3" required></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-success">Buat PO</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Evaluation Modal -->
+  <div id="evaluationModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Evaluasi Supplier</h3>
+        <span class="close" onclick="closeModal('evaluationModal')">&times;</span>
+      </div>
+      <form onsubmit="addEvaluation(event)">
+        <div class="form-group">
+          <label for="evaluationSupplier">Supplier</label>
+          <select id="evaluationSupplier" required>
+            <option value="">Pilih Supplier</option>
+          </select>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="evaluationPeriod">Periode</label>
+            <input type="month" id="evaluationPeriod" required>
+          </div>
+          <div class="form-group">
+            <label for="evaluationRating">Rating Keseluruhan (1-5)</label>
+            <input type="number" id="evaluationRating" min="1" max="5" step="0.1" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="evaluationQuality">Kualitas (1-5)</label>
+            <input type="number" id="evaluationQuality" min="1" max="5" step="0.1" required>
+          </div>
+          <div class="form-group">
+            <label for="evaluationTimeliness">Ketepatan Waktu (1-5)</label>
+            <input type="number" id="evaluationTimeliness" min="1" max="5" step="0.1" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="evaluationNotes">Catatan Evaluasi</label>
+          <textarea id="evaluationNotes" rows="4"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-warning">Simpan Evaluasi</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ERP Sistem Logistik - Hayder Logistics System</p>
+    </div>
+  </footer>
+
+  <script>
+    // Sample supplier data
+    let suppliers = JSON.parse(localStorage.getItem('suppliers')) || [
+      {
+        id: 1,
+        name: 'PT Teknologi Maju',
+        category: 'Elektronik',
+        email: 'info@teknologimaju.com',
+        phone: '021-5551234',
+        contact: 'Budi Santoso',
+        address: 'Jakarta Selatan',
+        rating: 4.5,
+        status: 'active',
+        notes: 'Supplier utama untuk perangkat elektronik',
+        joinDate: '2023-01-15'
+      },
+      {
+        id: 2,
+        name: 'CV Garmen Indonesia',
+        category: 'Pakaian',
+        email: 'sales@garmenindonesia.com',
+        phone: '021-5554567',
+        contact: 'Siti Nurhaliza',
+        address: 'Bandung',
+        rating: 4.2,
+        status: 'active',
+        notes: 'Supplier pakaian berkualitas tinggi',
+        joinDate: '2023-02-20'
+      },
+      {
+        id: 3,
+        name: 'UD Sumber Rejeki',
+        category: 'Makanan',
+        email: 'order@sumberrejeki.com',
+        phone: '021-5557890',
+        contact: 'Ahmad Wijaya',
+        address: 'Surabaya',
+        rating: 3.8,
+        status: 'active',
+        notes: 'Supplier bahan makanan',
+        joinDate: '2023-03-10'
+      }
+    ];
+
+    let purchaseOrders = JSON.parse(localStorage.getItem('purchaseOrders')) || [
+      {
+        id: 1,
+        poNumber: 'PO001',
+        supplierId: 1,
+        date: '2025-01-20',
+        deliveryDate: '2025-01-27',
+        total: 25000000,
+        status: 'approved',
+        description: 'Pembelian 20 unit laptop Dell'
+      },
+      {
+        id: 2,
+        poNumber: 'PO002',
+        supplierId: 2,
+        date: '2025-01-22',
+        deliveryDate: '2025-01-29',
+        total: 15000000,
+        status: 'pending',
+        description: 'Pembelian seragam karyawan'
+      }
+    ];
+
+    let evaluations = JSON.parse(localStorage.getItem('evaluations')) || [
+      {
+        id: 1,
+        supplierId: 1,
+        period: '2025-01',
+        rating: 4.5,
+        quality: 4.5,
+        timeliness: 4.3,
+        notes: 'Kualitas produk sangat baik, pengiriman tepat waktu'
+      },
+      {
+        id: 2,
+        supplierId: 2,
+        period: '2025-01',
+        rating: 4.2,
+        quality: 4.0,
+        timeliness: 4.4,
+        notes: 'Kualitas baik, terkadang terlambat pengiriman'
+      }
+    ];
+
+    function saveData() {
+      localStorage.setItem('suppliers', JSON.stringify(suppliers));
+      localStorage.setItem('purchaseOrders', JSON.stringify(purchaseOrders));
+      localStorage.setItem('evaluations', JSON.stringify(evaluations));
+      updateSupplierStats();
+    }
+
+    function updateSupplierStats() {
+      const activeSuppliers = suppliers.filter(s => s.status === 'active').length;
+      const avgRating = suppliers.length > 0 
+        ? (suppliers.reduce((sum, s) => sum + s.rating, 0) / suppliers.length).toFixed(1)
+        : '0.0';
+
+      document.getElementById('totalSuppliers').textContent = suppliers.length;
+      document.getElementById('activeSuppliers').textContent = activeSuppliers;
+      document.getElementById('totalPurchaseOrders').textContent = purchaseOrders.length;
+      document.getElementById('averageRating').textContent = avgRating;
+    }
+
+    function getSupplierById(id) {
+      return suppliers.find(s => s.id === id);
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(amount);
+    }
+
+    function formatDate(dateString) {
+      return new Date(dateString).toLocaleDateString('id-ID');
+    }
+
+    function generateStars(rating) {
+      const fullStars = Math.floor(rating);
+      const hasHalfStar = rating % 1 !== 0;
+      let stars = '';
+      
+      for (let i = 0; i < fullStars; i++) {
+        stars += '⭐';
+      }
+      if (hasHalfStar) {
+        stars += '⭐';
+      }
+      for (let i = fullStars + (hasHalfStar ? 1 : 0); i < 5; i++) {
+        stars += '☆';
+      }
+      
+      return stars;
+    }
+
+    function renderSuppliers(data = suppliers) {
+      const container = document.getElementById('supplierGrid');
+      container.innerHTML = '';
+
+      data.forEach(supplier => {
+        const card = document.createElement('div');
+        card.className = 'supplier-profile';
+        
+        const initials = supplier.name.split(' ').map(n => n[0]).join('').substr(0, 2);
+        const statusClass = supplier.status === 'active' ? 'active' : 'inactive';
+        const statusText = supplier.status === 'active' ? 'Aktif' : 'Tidak Aktif';
+        
+        card.innerHTML = `
+          <div class="supplier-header">
+            <div class="supplier-avatar">${initials}</div>
+            <div>
+              <div class="supplier-name">${supplier.name}</div>
+              <div class="supplier-category">${supplier.category}</div>
+            </div>
+          </div>
+          
+          <div class="supplier-details">
+            <p><strong>Contact:</strong> ${supplier.contact}</p>
+            <p><strong>Email:</strong> ${supplier.email}</p>
+            <p><strong>Telepon:</strong> ${supplier.phone}</p>
+            <div class="rating">
+              <strong>Rating:</strong> 
+              <span class="stars">${generateStars(supplier.rating)}</span>
+              <span>${supplier.rating}/5</span>
+            </div>
+            <p><strong>Status:</strong> <span class="status ${statusClass}">${statusText}</span></p>
+          </div>
+          
+          <div class="supplier-actions">
+            <button class="btn btn-warning" onclick="editSupplier(${supplier.id})">Edit</button>
+            <button class="btn btn-danger" onclick="deleteSupplier(${supplier.id})">Hapus</button>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+
+    function renderPurchaseOrders() {
+      const tbody = document.getElementById('purchaseTableBody');
+      tbody.innerHTML = '';
+
+      purchaseOrders.forEach(po => {
+        const supplier = getSupplierById(po.supplierId);
+        const row = document.createElement('tr');
+        
+        const statusClass = po.status === 'delivered' ? 'active' : 
+                           po.status === 'cancelled' ? 'inactive' : 'pending';
+        
+        row.innerHTML = `
+          <td>${po.poNumber}</td>
+          <td>${supplier ? supplier.name : 'Unknown'}</td>
+          <td>${formatDate(po.date)}</td>
+          <td>${formatCurrency(po.total)}</td>
+          <td><span class="status ${statusClass}">${po.status}</span></td>
+          <td>
+            <button class="btn btn-warning" onclick="editPurchaseOrder(${po.id})" style="margin-right: 5px;">Edit</button>
+            <button class="btn btn-danger" onclick="deletePurchaseOrder(${po.id})">Hapus</button>
+          </td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+    }
+
+    function renderEvaluations() {
+      const tbody = document.getElementById('evaluationTableBody');
+      tbody.innerHTML = '';
+
+      evaluations.forEach(evaluation => {
+        const supplier = getSupplierById(evaluation.supplierId);
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+          <td>${supplier ? supplier.name : 'Unknown'}</td>
+          <td>${new Date(evaluation.period + '-01').toLocaleDateString('id-ID', { year: 'numeric', month: 'long' })}</td>
+          <td>
+            <div class="rating">
+              <span class="stars">${generateStars(evaluation.rating)}</span>
+              <span>${evaluation.rating}/5</span>
+            </div>
+          </td>
+          <td>${evaluation.quality}/5</td>
+          <td>${evaluation.timeliness}/5</td>
+          <td>${evaluation.notes || '-'}</td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+    }
+
+    function populateSupplierSelects() {
+      const selects = ['purchaseSupplier', 'evaluationSupplier'];
+      
+      selects.forEach(selectId => {
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">Pilih Supplier</option>';
+        
+        suppliers.filter(s => s.status === 'active').forEach(supplier => {
+          const option = document.createElement('option');
+          option.value = supplier.id;
+          option.textContent = supplier.name;
+          select.appendChild(option);
+        });
+      });
+    }
+
+    function searchSuppliers() {
+      const searchTerm = document.getElementById('searchSupplier').value.toLowerCase();
+      const filteredData = suppliers.filter(supplier => 
+        supplier.name.toLowerCase().includes(searchTerm) ||
+        supplier.category.toLowerCase().includes(searchTerm) ||
+        supplier.contact.toLowerCase().includes(searchTerm)
+      );
+      renderSuppliers(filteredData);
+    }
+
+    function switchTab(event, tabName) {
+      const tabPanes = document.querySelectorAll('.tab-pane');
+      tabPanes.forEach(pane => pane.classList.remove('active'));
+
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      document.getElementById(tabName).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+      
+      if (modalId === 'purchaseModal') {
+        document.getElementById('purchaseDate').value = new Date().toISOString().split('T')[0];
+        const nextWeek = new Date();
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        document.getElementById('purchaseDeliveryDate').value = nextWeek.toISOString().split('T')[0];
+      } else if (modalId === 'evaluationModal') {
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        document.getElementById('evaluationPeriod').value = currentMonth;
+      }
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function addSupplier(event) {
+      event.preventDefault();
+      
+      const newSupplier = {
+        id: Date.now(),
+        name: document.getElementById('supplierName').value,
+        category: document.getElementById('supplierCategory').value,
+        email: document.getElementById('supplierEmail').value,
+        phone: document.getElementById('supplierPhone').value,
+        contact: document.getElementById('supplierContact').value,
+        address: document.getElementById('supplierAddress').value,
+        rating: parseFloat(document.getElementById('supplierRating').value),
+        status: 'active',
+        notes: document.getElementById('supplierNotes').value,
+        joinDate: new Date().toISOString().split('T')[0]
+      };
+
+      suppliers.push(newSupplier);
+      saveData();
+      renderSuppliers();
+      populateSupplierSelects();
+      closeModal('supplierModal');
+      
+      event.target.reset();
+      alert('Supplier berhasil ditambahkan!');
+    }
+
+    function addPurchaseOrder(event) {
+      event.preventDefault();
+      
+      const newPO = {
+        id: Date.now(),
+        poNumber: 'PO' + String(Date.now()).slice(-6),
+        supplierId: parseInt(document.getElementById('purchaseSupplier').value),
+        date: document.getElementById('purchaseDate').value,
+        deliveryDate: document.getElementById('purchaseDeliveryDate').value,
+        total: parseInt(document.getElementById('purchaseTotal').value),
+        status: document.getElementById('purchaseStatus').value,
+        description: document.getElementById('purchaseDescription').value
+      };
+
+      purchaseOrders.push(newPO);
+      saveData();
+      renderPurchaseOrders();
+      closeModal('purchaseModal');
+      
+      event.target.reset();
+      alert('Purchase Order berhasil dibuat!');
+    }
+
+    function addEvaluation(event) {
+      event.preventDefault();
+      
+      const newEvaluation = {
+        id: Date.now(),
+        supplierId: parseInt(document.getElementById('evaluationSupplier').value),
+        period: document.getElementById('evaluationPeriod').value,
+        rating: parseFloat(document.getElementById('evaluationRating').value),
+        quality: parseFloat(document.getElementById('evaluationQuality').value),
+        timeliness: parseFloat(document.getElementById('evaluationTimeliness').value),
+        notes: document.getElementById('evaluationNotes').value
+      };
+
+      evaluations.push(newEvaluation);
+      
+      // Update supplier rating based on latest evaluation
+      const supplier = getSupplierById(newEvaluation.supplierId);
+      if (supplier) {
+        supplier.rating = newEvaluation.rating;
+      }
+      
+      saveData();
+      renderEvaluations();
+      renderSuppliers();
+      closeModal('evaluationModal');
+      
+      event.target.reset();
+      alert('Evaluasi supplier berhasil disimpan!');
+    }
+
+    function deleteSupplier(id) {
+      if (confirm('Apakah Anda yakin ingin menghapus supplier ini?')) {
+        suppliers = suppliers.filter(s => s.id !== id);
+        saveData();
+        renderSuppliers();
+        populateSupplierSelects();
+        alert('Supplier berhasil dihapus!');
+      }
+    }
+
+    function deletePurchaseOrder(id) {
+      if (confirm('Apakah Anda yakin ingin menghapus PO ini?')) {
+        purchaseOrders = purchaseOrders.filter(po => po.id !== id);
+        saveData();
+        renderPurchaseOrders();
+        alert('Purchase Order berhasil dihapus!');
+      }
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      updateSupplierStats();
+      renderSuppliers();
+      renderPurchaseOrders();
+      renderEvaluations();
+      populateSupplierSelects();
+    });
+  </script>
+</body>
+</html>
