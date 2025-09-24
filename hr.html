@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manajemen SDM - ERP Sistem Logistik</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    
+    .breadcrumb {
+      color: #ecf0f1;
+      font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+      color: #ecf0f1;
+      text-decoration: none;
+    }
+    
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    
+    nav {
+      background-color: #34495e;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .nav-menu {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    nav a:hover, nav a.active {
+      background-color: #2c3e50;
+      transform: translateY(-2px);
+    }
+    
+    main {
+      padding: 40px 0;
+      min-height: calc(100vh - 200px);
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .page-header h2 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .hr-overview {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+    
+    .hr-card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .hr-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .hr-card .icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    
+    .hr-card .number {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+    
+    .hr-card .label {
+      color: #7f8c8d;
+      font-size: 1rem;
+    }
+    
+    .tabs {
+      display: flex;
+      background: white;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      margin-bottom: 0;
+    }
+    
+    .tab {
+      flex: 1;
+      padding: 20px;
+      background: #ecf0f1;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+    
+    .tab.active {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+    
+    .tab:hover:not(.active) {
+      background: #d5dbdb;
+    }
+    
+    .tab-content {
+      background: white;
+      padding: 30px;
+      border-radius: 0 0 12px 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    
+    .tab-pane {
+      display: none;
+    }
+    
+    .tab-pane.active {
+      display: block;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+    }
+    
+    .search-box input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .search-box input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #27ae60, #229954);
+      color: white;
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+    }
+    
+    .btn-warning {
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      color: white;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .employee-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    
+    .employee-table th {
+      background: linear-gradient(135deg, #34495e, #2c3e50);
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    .employee-table td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .employee-table tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .status {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .status.active {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .status.inactive {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    .status.leave {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    .employee-card {
+      background: white;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+    
+    .employee-avatar {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: bold;
+      font-size: 1.5rem;
+    }
+    
+    .employee-info {
+      flex: 1;
+    }
+    
+    .employee-name {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+    
+    .employee-position {
+      color: #7f8c8d;
+      margin-bottom: 10px;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .modal-header h3 {
+      color: #2c3e50;
+      font-size: 1.5rem;
+    }
+    
+    .close {
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #999;
+    }
+    
+    .close:hover {
+      color: #333;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    
+    footer {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+    
+    @media (max-width: 768px) {
+      .hr-overview {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      
+      .tabs {
+        flex-direction: column;
+      }
+      
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-box {
+        max-width: none;
+      }
+      
+      .employee-table {
+        font-size: 0.9rem;
+      }
+      
+      .employee-card {
+        flex-direction: column;
+        text-align: center;
+      }
+      
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .modal-content {
+        margin: 2% auto;
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>👥 Manajemen SDM</h1>
+        </div>
+        <div class="breadcrumb">
+          <a href="index.html">Dashboard</a> / SDM
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <div class="nav-menu">
+        <a href="index.html">📊 Dashboard</a>
+        <a href="inventory.html">📦 Inventory</a>
+        <a href="finance.html">💰 Keuangan</a>
+        <a href="hr.html" class="active">👥 SDM</a>
+        <a href="customer.html">🤝 Pelanggan</a>
+        <a href="supplier.html">🚚 Supplier</a>
+        <a href="reports.html">📈 Laporan</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h2>Manajemen Sumber Daya Manusia</h2>
+        <p>Kelola karyawan, absensi, dan performance tracking</p>
+      </div>
+
+      <div class="hr-overview">
+        <div class="hr-card">
+          <div class="icon">👥</div>
+          <div class="number" id="totalEmployees">25</div>
+          <div class="label">Total Karyawan</div>
+        </div>
+        <div class="hr-card">
+          <div class="icon">✅</div>
+          <div class="number" id="activeEmployees">23</div>
+          <div class="label">Karyawan Aktif</div>
+        </div>
+        <div class="hr-card">
+          <div class="icon">🏖️</div>
+          <div class="number" id="employeesOnLeave">2</div>
+          <div class="label">Sedang Cuti</div>
+        </div>
+        <div class="hr-card">
+          <div class="icon">📊</div>
+          <div class="number" id="averagePerformance">4.2</div>
+          <div class="label">Rata-rata Performance</div>
+        </div>
+      </div>
+
+      <div class="tabs">
+        <button class="tab active" onclick="switchTab(event, 'employees')">Karyawan</button>
+        <button class="tab" onclick="switchTab(event, 'attendance')">Absensi</button>
+        <button class="tab" onclick="switchTab(event, 'performance')">Performance</button>
+      </div>
+
+      <div class="tab-content">
+        <!-- Employees Tab -->
+        <div id="employees" class="tab-pane active">
+          <div class="controls">
+            <div class="search-box">
+              <input type="text" id="searchEmployee" placeholder="Cari karyawan..." onkeyup="searchEmployees()">
+            </div>
+            <button class="btn btn-primary" onclick="openModal('employeeModal')">+ Tambah Karyawan</button>
+          </div>
+          
+          <div id="employeeList">
+            <!-- Employee cards will be populated by JavaScript -->
+          </div>
+        </div>
+
+        <!-- Attendance Tab -->
+        <div id="attendance" class="tab-pane">
+          <div class="controls">
+            <h3>Manajemen Absensi</h3>
+            <button class="btn btn-success" onclick="openModal('attendanceModal')">+ Catat Absensi</button>
+          </div>
+          
+          <table class="employee-table">
+            <thead>
+              <tr>
+                <th>Tanggal</th>
+                <th>Nama Karyawan</th>
+                <th>Jam Masuk</th>
+                <th>Jam Keluar</th>
+                <th>Status</th>
+                <th>Keterangan</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody">
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Performance Tab -->
+        <div id="performance" class="tab-pane">
+          <div class="controls">
+            <h3>Performance Karyawan</h3>
+            <button class="btn btn-warning" onclick="openModal('performanceModal')">+ Evaluasi Performance</button>
+          </div>
+          
+          <table class="employee-table">
+            <thead>
+              <tr>
+                <th>Nama Karyawan</th>
+                <th>Periode</th>
+                <th>Score</th>
+                <th>Target</th>
+                <th>Achievement</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="performanceTableBody">
+              <!-- Data will be populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Employee Modal -->
+  <div id="employeeModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Tambah Karyawan Baru</h3>
+        <span class="close" onclick="closeModal('employeeModal')">&times;</span>
+      </div>
+      <form onsubmit="addEmployee(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="employeeName">Nama Lengkap</label>
+            <input type="text" id="employeeName" required>
+          </div>
+          <div class="form-group">
+            <label for="employeeId">ID Karyawan</label>
+            <input type="text" id="employeeId" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="employeePosition">Posisi</label>
+            <select id="employeePosition" required>
+              <option value="">Pilih Posisi</option>
+              <option value="Manager">Manager</option>
+              <option value="Supervisor">Supervisor</option>
+              <option value="Staff">Staff</option>
+              <option value="Driver">Driver</option>
+              <option value="Admin">Admin</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="employeeDepartment">Departemen</label>
+            <select id="employeeDepartment" required>
+              <option value="">Pilih Departemen</option>
+              <option value="Logistik">Logistik</option>
+              <option value="Keuangan">Keuangan</option>
+              <option value="SDM">SDM</option>
+              <option value="IT">IT</option>
+              <option value="Marketing">Marketing</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="employeeEmail">Email</label>
+            <input type="email" id="employeeEmail" required>
+          </div>
+          <div class="form-group">
+            <label for="employeePhone">Telepon</label>
+            <input type="tel" id="employeePhone" required>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="employeeStartDate">Tanggal Mulai</label>
+            <input type="date" id="employeeStartDate" required>
+          </div>
+          <div class="form-group">
+            <label for="employeeSalary">Gaji (Rp)</label>
+            <input type="number" id="employeeSalary" min="0" step="100000" required>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="employeeAddress">Alamat</label>
+          <textarea id="employeeAddress" rows="3"></textarea>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Simpan Karyawan</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Attendance Modal -->
+  <div id="attendanceModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Catat Absensi</h3>
+        <span class="close" onclick="closeModal('attendanceModal')">&times;</span>
+      </div>
+      <form onsubmit="addAttendance(event)">
+        <div class="form-group">
+          <label for="attendanceDate">Tanggal</label>
+          <input type="date" id="attendanceDate" required>
+        </div>
+        <div class="form-group">
+          <label for="attendanceEmployee">Karyawan</label>
+          <select id="attendanceEmployee" required>
+            <option value="">Pilih Karyawan</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="attendanceTimeIn">Jam Masuk</label>
+            <input type="time" id="attendanceTimeIn" required>
+          </div>
+          <div class="form-group">
+            <label for="attendanceTimeOut">Jam Keluar</label>
+            <input type="time" id="attendanceTimeOut">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="attendanceStatus">Status</label>
+          <select id="attendanceStatus" required>
+            <option value="Hadir">Hadir</option>
+            <option value="Terlambat">Terlambat</option>
+            <option value="Sakit">Sakit</option>
+            <option value="Izin">Izin</option>
+            <option value="Alpha">Alpha</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="attendanceNotes">Keterangan</label>
+          <textarea id="attendanceNotes" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-success">Simpan Absensi</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Performance Modal -->
+  <div id="performanceModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Evaluasi Performance</h3>
+        <span class="close" onclick="closeModal('performanceModal')">&times;</span>
+      </div>
+      <form onsubmit="addPerformance(event)">
+        <div class="form-group">
+          <label for="performanceEmployee">Karyawan</label>
+          <select id="performanceEmployee" required>
+            <option value="">Pilih Karyawan</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="performancePeriod">Periode</label>
+            <input type="month" id="performancePeriod" required>
+          </div>
+          <div class="form-group">
+            <label for="performanceScore">Score (1-5)</label>
+            <input type="number" id="performanceScore" min="1" max="5" step="0.1" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="performanceTarget">Target</label>
+            <input type="text" id="performanceTarget" required>
+          </div>
+          <div class="form-group">
+            <label for="performanceAchievement">Achievement (%)</label>
+            <input type="number" id="performanceAchievement" min="0" max="200" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="performanceNotes">Catatan</label>
+          <textarea id="performanceNotes" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-warning">Simpan Evaluasi</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ERP Sistem Logistik - Hayder Logistics System</p>
+    </div>
+  </footer>
+
+  <script>
+    // Sample HR data
+    let employees = JSON.parse(localStorage.getItem('employees')) || [
+      {
+        id: 1,
+        employeeId: 'EMP001',
+        name: 'Ahmad Sudrajat',
+        position: 'Manager',
+        department: 'Logistik',
+        email: 'ahmad@logistik.com',
+        phone: '081234567890',
+        startDate: '2023-01-15',
+        salary: 8000000,
+        address: 'Jakarta Selatan',
+        status: 'active'
+      },
+      {
+        id: 2,
+        employeeId: 'EMP002',
+        name: 'Siti Nurhaliza',
+        position: 'Supervisor',
+        department: 'Keuangan',
+        email: 'siti@logistik.com',
+        phone: '081234567891',
+        startDate: '2023-03-01',
+        salary: 6000000,
+        address: 'Jakarta Barat',
+        status: 'active'
+      },
+      {
+        id: 3,
+        employeeId: 'EMP003',
+        name: 'Budi Santoso',
+        position: 'Driver',
+        department: 'Logistik',
+        email: 'budi@logistik.com',
+        phone: '081234567892',
+        startDate: '2023-06-15',
+        salary: 4000000,
+        address: 'Jakarta Timur',
+        status: 'leave'
+      }
+    ];
+
+    let attendance = JSON.parse(localStorage.getItem('attendance')) || [
+      {
+        id: 1,
+        date: '2025-01-24',
+        employeeId: 1,
+        timeIn: '08:00',
+        timeOut: '17:00',
+        status: 'Hadir',
+        notes: ''
+      },
+      {
+        id: 2,
+        date: '2025-01-24',
+        employeeId: 2,
+        timeIn: '08:15',
+        timeOut: '17:30',
+        status: 'Terlambat',
+        notes: 'Terlambat 15 menit'
+      }
+    ];
+
+    let performance = JSON.parse(localStorage.getItem('performance')) || [
+      {
+        id: 1,
+        employeeId: 1,
+        period: '2025-01',
+        score: 4.5,
+        target: 'Meningkatkan efisiensi logistik',
+        achievement: 85,
+        status: 'Excellent',
+        notes: 'Performance sangat baik'
+      },
+      {
+        id: 2,
+        employeeId: 2,
+        period: '2025-01',
+        score: 4.0,
+        target: 'Optimasi laporan keuangan',
+        achievement: 80,
+        status: 'Good',
+        notes: 'Memenuhi target dengan baik'
+      }
+    ];
+
+    function saveData() {
+      localStorage.setItem('employees', JSON.stringify(employees));
+      localStorage.setItem('attendance', JSON.stringify(attendance));
+      localStorage.setItem('performance', JSON.stringify(performance));
+      updateHRStats();
+    }
+
+    function updateHRStats() {
+      const activeEmployees = employees.filter(emp => emp.status === 'active').length;
+      const onLeave = employees.filter(emp => emp.status === 'leave').length;
+      const avgPerformance = performance.length > 0 
+        ? (performance.reduce((sum, p) => sum + p.score, 0) / performance.length).toFixed(1)
+        : '0.0';
+
+      document.getElementById('totalEmployees').textContent = employees.length;
+      document.getElementById('activeEmployees').textContent = activeEmployees;
+      document.getElementById('employeesOnLeave').textContent = onLeave;
+      document.getElementById('averagePerformance').textContent = avgPerformance;
+
+      // Update dashboard
+      const dashboardData = JSON.parse(localStorage.getItem('erpDashboard')) || {};
+      dashboardData.employees = employees.length;
+      localStorage.setItem('erpDashboard', JSON.stringify(dashboardData));
+    }
+
+    function getEmployeeById(id) {
+      return employees.find(emp => emp.id === id);
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(amount);
+    }
+
+    function renderEmployees(data = employees) {
+      const container = document.getElementById('employeeList');
+      container.innerHTML = '';
+
+      data.forEach(employee => {
+        const card = document.createElement('div');
+        card.className = 'employee-card';
+        
+        const initials = employee.name.split(' ').map(n => n[0]).join('').substr(0, 2);
+        const statusClass = employee.status === 'active' ? 'active' : employee.status === 'leave' ? 'leave' : 'inactive';
+        const statusText = employee.status === 'active' ? 'Aktif' : employee.status === 'leave' ? 'Cuti' : 'Tidak Aktif';
+        
+        card.innerHTML = `
+          <div class="employee-avatar">${initials}</div>
+          <div class="employee-info">
+            <div class="employee-name">${employee.name}</div>
+            <div class="employee-position">${employee.position} - ${employee.department}</div>
+            <div><strong>ID:</strong> ${employee.employeeId} | <strong>Email:</strong> ${employee.email}</div>
+            <div><strong>Gaji:</strong> ${formatCurrency(employee.salary)} | <strong>Status:</strong> <span class="status ${statusClass}">${statusText}</span></div>
+          </div>
+          <div>
+            <button class="btn btn-warning" onclick="editEmployee(${employee.id})" style="margin-right: 5px;">Edit</button>
+            <button class="btn btn-danger" onclick="deleteEmployee(${employee.id})">Hapus</button>
+          </div>
+        `;
+        
+        container.appendChild(card);
+      });
+    }
+
+    function renderAttendance() {
+      const tbody = document.getElementById('attendanceTableBody');
+      tbody.innerHTML = '';
+
+      attendance.forEach(record => {
+        const employee = getEmployeeById(record.employeeId);
+        const row = document.createElement('tr');
+        
+        row.innerHTML = `
+          <td>${new Date(record.date).toLocaleDateString('id-ID')}</td>
+          <td>${employee ? employee.name : 'Unknown'}</td>
+          <td>${record.timeIn}</td>
+          <td>${record.timeOut || '-'}</td>
+          <td><span class="status ${record.status.toLowerCase()}">${record.status}</span></td>
+          <td>${record.notes || '-'}</td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+    }
+
+    function renderPerformance() {
+      const tbody = document.getElementById('performanceTableBody');
+      tbody.innerHTML = '';
+
+      performance.forEach(record => {
+        const employee = getEmployeeById(record.employeeId);
+        const row = document.createElement('tr');
+        
+        const statusClass = record.score >= 4.5 ? 'active' : record.score >= 3.5 ? 'leave' : 'inactive';
+        
+        row.innerHTML = `
+          <td>${employee ? employee.name : 'Unknown'}</td>
+          <td>${new Date(record.period + '-01').toLocaleDateString('id-ID', { year: 'numeric', month: 'long' })}</td>
+          <td>${record.score}/5</td>
+          <td>${record.target}</td>
+          <td>${record.achievement}%</td>
+          <td><span class="status ${statusClass}">${record.status}</span></td>
+        `;
+        
+        tbody.appendChild(row);
+      });
+    }
+
+    function populateEmployeeSelects() {
+      const selects = ['attendanceEmployee', 'performanceEmployee'];
+      
+      selects.forEach(selectId => {
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">Pilih Karyawan</option>';
+        
+        employees.forEach(employee => {
+          const option = document.createElement('option');
+          option.value = employee.id;
+          option.textContent = `${employee.name} (${employee.employeeId})`;
+          select.appendChild(option);
+        });
+      });
+    }
+
+    function searchEmployees() {
+      const searchTerm = document.getElementById('searchEmployee').value.toLowerCase();
+      const filteredData = employees.filter(emp => 
+        emp.name.toLowerCase().includes(searchTerm) ||
+        emp.employeeId.toLowerCase().includes(searchTerm) ||
+        emp.position.toLowerCase().includes(searchTerm) ||
+        emp.department.toLowerCase().includes(searchTerm)
+      );
+      renderEmployees(filteredData);
+    }
+
+    function switchTab(event, tabName) {
+      const tabPanes = document.querySelectorAll('.tab-pane');
+      tabPanes.forEach(pane => pane.classList.remove('active'));
+
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      document.getElementById(tabName).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+      
+      if (modalId === 'attendanceModal') {
+        document.getElementById('attendanceDate').value = new Date().toISOString().split('T')[0];
+      } else if (modalId === 'performanceModal') {
+        const currentMonth = new Date().toISOString().slice(0, 7);
+        document.getElementById('performancePeriod').value = currentMonth;
+      }
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function addEmployee(event) {
+      event.preventDefault();
+      
+      const newEmployee = {
+        id: Date.now(),
+        employeeId: document.getElementById('employeeId').value,
+        name: document.getElementById('employeeName').value,
+        position: document.getElementById('employeePosition').value,
+        department: document.getElementById('employeeDepartment').value,
+        email: document.getElementById('employeeEmail').value,
+        phone: document.getElementById('employeePhone').value,
+        startDate: document.getElementById('employeeStartDate').value,
+        salary: parseInt(document.getElementById('employeeSalary').value),
+        address: document.getElementById('employeeAddress').value,
+        status: 'active'
+      };
+
+      employees.push(newEmployee);
+      saveData();
+      renderEmployees();
+      populateEmployeeSelects();
+      closeModal('employeeModal');
+      
+      event.target.reset();
+      alert('Karyawan berhasil ditambahkan!');
+    }
+
+    function addAttendance(event) {
+      event.preventDefault();
+      
+      const newAttendance = {
+        id: Date.now(),
+        date: document.getElementById('attendanceDate').value,
+        employeeId: parseInt(document.getElementById('attendanceEmployee').value),
+        timeIn: document.getElementById('attendanceTimeIn').value,
+        timeOut: document.getElementById('attendanceTimeOut').value,
+        status: document.getElementById('attendanceStatus').value,
+        notes: document.getElementById('attendanceNotes').value
+      };
+
+      attendance.push(newAttendance);
+      saveData();
+      renderAttendance();
+      closeModal('attendanceModal');
+      
+      event.target.reset();
+      alert('Absensi berhasil dicatat!');
+    }
+
+    function addPerformance(event) {
+      event.preventDefault();
+      
+      const score = parseFloat(document.getElementById('performanceScore').value);
+      let status = 'Poor';
+      if (score >= 4.5) status = 'Excellent';
+      else if (score >= 4.0) status = 'Very Good';
+      else if (score >= 3.5) status = 'Good';
+      else if (score >= 3.0) status = 'Average';
+      
+      const newPerformance = {
+        id: Date.now(),
+        employeeId: parseInt(document.getElementById('performanceEmployee').value),
+        period: document.getElementById('performancePeriod').value,
+        score: score,
+        target: document.getElementById('performanceTarget').value,
+        achievement: parseInt(document.getElementById('performanceAchievement').value),
+        status: status,
+        notes: document.getElementById('performanceNotes').value
+      };
+
+      performance.push(newPerformance);
+      saveData();
+      renderPerformance();
+      closeModal('performanceModal');
+      
+      event.target.reset();
+      alert('Evaluasi performance berhasil disimpan!');
+    }
+
+    function deleteEmployee(id) {
+      if (confirm('Apakah Anda yakin ingin menghapus karyawan ini?')) {
+        employees = employees.filter(emp => emp.id !== id);
+        saveData();
+        renderEmployees();
+        populateEmployeeSelects();
+        alert('Karyawan berhasil dihapus!');
+      }
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      updateHRStats();
+      renderEmployees();
+      renderAttendance();
+      renderPerformance();
+      populateEmployeeSelects();
+    });
+  </script>
+</body>
+</html>

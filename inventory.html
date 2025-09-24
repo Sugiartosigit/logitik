@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Manajemen Inventory - ERP Sistem Logistik</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    
+    .breadcrumb {
+      color: #ecf0f1;
+      font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+      color: #ecf0f1;
+      text-decoration: none;
+    }
+    
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    
+    nav {
+      background-color: #34495e;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .nav-menu {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    nav a:hover, nav a.active {
+      background-color: #2c3e50;
+      transform: translateY(-2px);
+    }
+    
+    main {
+      padding: 40px 0;
+      min-height: calc(100vh - 200px);
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .page-header h2 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+    
+    .search-box {
+      flex: 1;
+      max-width: 300px;
+    }
+    
+    .search-box input {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .search-box input:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #2980b9, #2c3e50);
+      transform: translateY(-2px);
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #27ae60, #229954);
+      color: white;
+    }
+    
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c, #c0392b);
+      color: white;
+    }
+    
+    .btn-warning {
+      background: linear-gradient(135deg, #f39c12, #e67e22);
+      color: white;
+    }
+    
+    .inventory-table {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th {
+      background: linear-gradient(135deg, #34495e, #2c3e50);
+      color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .status {
+      padding: 5px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    
+    .status.in-stock {
+      background-color: #d4edda;
+      color: #155724;
+    }
+    
+    .status.low-stock {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    
+    .status.out-of-stock {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+    }
+    
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 30px;
+      border-radius: 12px;
+      width: 90%;
+      max-width: 500px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+    
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .modal-header h3 {
+      color: #2c3e50;
+      font-size: 1.5rem;
+    }
+    
+    .close {
+      font-size: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: #999;
+    }
+    
+    .close:hover {
+      color: #333;
+    }
+    
+    .form-group {
+      margin-bottom: 20px;
+    }
+    
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    footer {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+    
+    @media (max-width: 768px) {
+      .controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .search-box {
+        max-width: none;
+      }
+      
+      .inventory-table {
+        overflow-x: auto;
+      }
+      
+      table {
+        min-width: 600px;
+      }
+      
+      .modal-content {
+        margin: 5% auto;
+        width: 95%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>📦 Manajemen Inventory</h1>
+        </div>
+        <div class="breadcrumb">
+          <a href="index.html">Dashboard</a> / Inventory
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <div class="nav-menu">
+        <a href="index.html">📊 Dashboard</a>
+        <a href="inventory.html" class="active">📦 Inventory</a>
+        <a href="finance.html">💰 Keuangan</a>
+        <a href="hr.html">👥 SDM</a>
+        <a href="customer.html">🤝 Pelanggan</a>
+        <a href="supplier.html">🚚 Supplier</a>
+        <a href="reports.html">📈 Laporan</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h2>Manajemen Inventory</h2>
+        <p>Kelola stok barang dan inventory secara real-time</p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Cari produk..." onkeyup="searchProducts()">
+        </div>
+        <button class="btn btn-primary" onclick="openModal('addModal')">+ Tambah Produk</button>
+      </div>
+
+      <div class="inventory-table">
+        <table id="inventoryTable">
+          <thead>
+            <tr>
+              <th>Kode Produk</th>
+              <th>Nama Produk</th>
+              <th>Kategori</th>
+              <th>Stok</th>
+              <th>Harga</th>
+              <th>Status</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody id="inventoryTableBody">
+            <!-- Data will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Product Modal -->
+  <div id="addModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Tambah Produk Baru</h3>
+        <span class="close" onclick="closeModal('addModal')">&times;</span>
+      </div>
+      <form onsubmit="addProduct(event)">
+        <div class="form-group">
+          <label for="productCode">Kode Produk</label>
+          <input type="text" id="productCode" required>
+        </div>
+        <div class="form-group">
+          <label for="productName">Nama Produk</label>
+          <input type="text" id="productName" required>
+        </div>
+        <div class="form-group">
+          <label for="productCategory">Kategori</label>
+          <select id="productCategory" required>
+            <option value="">Pilih Kategori</option>
+            <option value="Elektronik">Elektronik</option>
+            <option value="Pakaian">Pakaian</option>
+            <option value="Makanan">Makanan</option>
+            <option value="Peralatan">Peralatan</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="productStock">Stok</label>
+          <input type="number" id="productStock" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="productPrice">Harga (Rp)</label>
+          <input type="number" id="productPrice" min="0" step="1000" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Simpan Produk</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Product Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Edit Produk</h3>
+        <span class="close" onclick="closeModal('editModal')">&times;</span>
+      </div>
+      <form onsubmit="updateProduct(event)">
+        <input type="hidden" id="editProductId">
+        <div class="form-group">
+          <label for="editProductCode">Kode Produk</label>
+          <input type="text" id="editProductCode" required>
+        </div>
+        <div class="form-group">
+          <label for="editProductName">Nama Produk</label>
+          <input type="text" id="editProductName" required>
+        </div>
+        <div class="form-group">
+          <label for="editProductCategory">Kategori</label>
+          <select id="editProductCategory" required>
+            <option value="">Pilih Kategori</option>
+            <option value="Elektronik">Elektronik</option>
+            <option value="Pakaian">Pakaian</option>
+            <option value="Makanan">Makanan</option>
+            <option value="Peralatan">Peralatan</option>
+            <option value="Lainnya">Lainnya</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="editProductStock">Stok</label>
+          <input type="number" id="editProductStock" min="0" required>
+        </div>
+        <div class="form-group">
+          <label for="editProductPrice">Harga (Rp)</label>
+          <input type="number" id="editProductPrice" min="0" step="1000" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Produk</button>
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ERP Sistem Logistik - Hayder Logistics System</p>
+    </div>
+  </footer>
+
+  <script>
+    // Sample inventory data
+    let inventory = JSON.parse(localStorage.getItem('inventory')) || [
+      {
+        id: 1,
+        code: 'ELK001',
+        name: 'Laptop Dell Inspiron',
+        category: 'Elektronik',
+        stock: 25,
+        price: 8500000
+      },
+      {
+        id: 2,
+        code: 'PKN001',
+        name: 'Kemeja Formal Putih',
+        category: 'Pakaian',
+        stock: 5,
+        price: 150000
+      },
+      {
+        id: 3,
+        code: 'MKN001',
+        name: 'Kopi Premium 1kg',
+        category: 'Makanan',
+        stock: 0,
+        price: 250000
+      },
+      {
+        id: 4,
+        code: 'PRL001',
+        name: 'Printer Canon',
+        category: 'Peralatan',
+        stock: 15,
+        price: 2500000
+      }
+    ];
+
+    function saveInventory() {
+      localStorage.setItem('inventory', JSON.stringify(inventory));
+      updateDashboardStats();
+    }
+
+    function updateDashboardStats() {
+      const dashboardData = JSON.parse(localStorage.getItem('erpDashboard')) || {};
+      dashboardData.products = inventory.length;
+      localStorage.setItem('erpDashboard', JSON.stringify(dashboardData));
+    }
+
+    function getStatus(stock) {
+      if (stock === 0) return { class: 'out-of-stock', text: 'Habis' };
+      if (stock <= 10) return { class: 'low-stock', text: 'Stok Rendah' };
+      return { class: 'in-stock', text: 'Tersedia' };
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(amount);
+    }
+
+    function renderInventory(data = inventory) {
+      const tbody = document.getElementById('inventoryTableBody');
+      tbody.innerHTML = '';
+
+      data.forEach(item => {
+        const status = getStatus(item.stock);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${item.code}</td>
+          <td>${item.name}</td>
+          <td>${item.category}</td>
+          <td>${item.stock}</td>
+          <td>${formatCurrency(item.price)}</td>
+          <td><span class="status ${status.class}">${status.text}</span></td>
+          <td>
+            <button class="btn btn-warning" onclick="editProduct(${item.id})" style="margin-right: 5px;">Edit</button>
+            <button class="btn btn-danger" onclick="deleteProduct(${item.id})">Hapus</button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    function searchProducts() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const filteredData = inventory.filter(item => 
+        item.name.toLowerCase().includes(searchTerm) ||
+        item.code.toLowerCase().includes(searchTerm) ||
+        item.category.toLowerCase().includes(searchTerm)
+      );
+      renderInventory(filteredData);
+    }
+
+    function openModal(modalId) {
+      document.getElementById(modalId).style.display = 'block';
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).style.display = 'none';
+    }
+
+    function addProduct(event) {
+      event.preventDefault();
+      
+      const newProduct = {
+        id: Date.now(),
+        code: document.getElementById('productCode').value,
+        name: document.getElementById('productName').value,
+        category: document.getElementById('productCategory').value,
+        stock: parseInt(document.getElementById('productStock').value),
+        price: parseInt(document.getElementById('productPrice').value)
+      };
+
+      inventory.push(newProduct);
+      saveInventory();
+      renderInventory();
+      closeModal('addModal');
+      
+      // Reset form
+      event.target.reset();
+      
+      alert('Produk berhasil ditambahkan!');
+    }
+
+    function editProduct(id) {
+      const product = inventory.find(item => item.id === id);
+      if (product) {
+        document.getElementById('editProductId').value = product.id;
+        document.getElementById('editProductCode').value = product.code;
+        document.getElementById('editProductName').value = product.name;
+        document.getElementById('editProductCategory').value = product.category;
+        document.getElementById('editProductStock').value = product.stock;
+        document.getElementById('editProductPrice').value = product.price;
+        
+        openModal('editModal');
+      }
+    }
+
+    function updateProduct(event) {
+      event.preventDefault();
+      
+      const id = parseInt(document.getElementById('editProductId').value);
+      const productIndex = inventory.findIndex(item => item.id === id);
+      
+      if (productIndex !== -1) {
+        inventory[productIndex] = {
+          id: id,
+          code: document.getElementById('editProductCode').value,
+          name: document.getElementById('editProductName').value,
+          category: document.getElementById('editProductCategory').value,
+          stock: parseInt(document.getElementById('editProductStock').value),
+          price: parseInt(document.getElementById('editProductPrice').value)
+        };
+        
+        saveInventory();
+        renderInventory();
+        closeModal('editModal');
+        
+        alert('Produk berhasil diupdate!');
+      }
+    }
+
+    function deleteProduct(id) {
+      if (confirm('Apakah Anda yakin ingin menghapus produk ini?')) {
+        inventory = inventory.filter(item => item.id !== id);
+        saveInventory();
+        renderInventory();
+        alert('Produk berhasil dihapus!');
+      }
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach(modal => {
+        if (event.target === modal) {
+          modal.style.display = 'none';
+        }
+      });
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      renderInventory();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ERP Sistem Logistik - Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .logo h1 {
+      font-size: 2rem;
+      font-weight: 600;
+    }
+    
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      background-color: #ecf0f1;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #2c3e50;
+      font-weight: bold;
+    }
+    
+    nav {
+      background-color: #34495e;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .nav-menu {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    nav a:hover {
+      background-color: #2c3e50;
+      transform: translateY(-2px);
+    }
+    
+    main {
+      padding: 40px 0;
+      min-height: calc(100vh - 200px);
+    }
+    
+    .dashboard-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .dashboard-header h2 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .dashboard-subtitle {
+      color: #7f8c8d;
+      font-size: 1.1rem;
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    
+    .stat-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .stat-icon {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    
+    .stat-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+    
+    .stat-label {
+      color: #7f8c8d;
+      font-size: 1rem;
+    }
+    
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+    
+    .module-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+    }
+    
+    .module-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    }
+    
+    .module-header {
+      padding: 25px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      text-align: center;
+    }
+    
+    .module-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .module-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    .module-content {
+      padding: 25px;
+    }
+    
+    .module-description {
+      color: #7f8c8d;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    .module-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .module-button:hover {
+      background: linear-gradient(135deg, #2980b9, #2c3e50);
+      transform: translateY(-2px);
+    }
+    
+    footer {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+    
+    @media (max-width: 768px) {
+      .header-content {
+        text-align: center;
+      }
+      
+      .nav-menu {
+        justify-content: center;
+      }
+      
+      nav a {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+      }
+      
+      .dashboard-header h2 {
+        font-size: 2rem;
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      }
+      
+      .modules-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>🏢 ERP Sistem Logistik</h1>
+        </div>
+        <div class="user-info">
+          <span>Selamat datang, Admin</span>
+          <div class="user-avatar">A</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <div class="nav-menu">
+        <a href="dashboard.html">📊 Dashboard</a>
+        <a href="inventory.html">📦 Inventory</a>
+        <a href="finance.html">💰 Keuangan</a>
+        <a href="hr.html">👥 SDM</a>
+        <a href="customer.html">🤝 Pelanggan</a>
+        <a href="supplier.html">🚚 Supplier</a>
+        <a href="reports.html">📈 Laporan</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="dashboard-header">
+        <h2>Dashboard ERP</h2>
+        <p class="dashboard-subtitle">Sistem manajemen terintegrasi untuk divisi logistik</p>
+      </div>
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon">📦</div>
+          <div class="stat-number" id="totalProducts">150</div>
+          <div class="stat-label">Total Produk</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">💰</div>
+          <div class="stat-number" id="monthlyRevenue">2.5M</div>
+          <div class="stat-label">Pendapatan Bulan Ini</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">👥</div>
+          <div class="stat-number" id="totalEmployees">25</div>
+          <div class="stat-label">Total Karyawan</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🚚</div>
+          <div class="stat-number" id="activeOrders">48</div>
+          <div class="stat-label">Pesanan Aktif</div>
+        </div>
+      </div>
+
+      <div class="modules-grid">
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">📦</div>
+            <div class="module-title">Manajemen Inventory</div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Kelola stok barang, tracking inventory, dan optimasi gudang secara real-time</p>
+            <a href="inventory.html" class="module-button">Kelola Inventory</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">💰</div>
+            <div class="module-title">Manajemen Keuangan</div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Tracking pendapatan, pengeluaran, dan laporan keuangan</p>
+            <a href="finance.html" class="module-button">Kelola Keuangan</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">👥</div>
+            <div class="module-title">Sumber Daya Manusia</div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Manajemen karyawan, absensi, dan performance tracking</p>
+            <a href="hr.html" class="module-button">Kelola SDM</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">🤝</div>
+            <div class="module-title">Customer Relations</div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Manajemen pelanggan dan relationship management</p>
+            <a href="customer.html" class="module-button">Kelola Pelanggan</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">🚚</div>
+            <div class="module-title">Manajemen Supplier</div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Kelola supplier, purchase order, dan vendor management</p>
+            <a href="supplier.html" class="module-button">Kelola Supplier</a>
+          </div>
+        </div>
+
+        <div class="module-card">
+          <div class="module-header">
+            <div class="module-icon">📈</div>
+            <div class="module-title">Laporan & Analytics</div>
+          </div>
+          <div class="module-content">
+            <p class="module-description">Dashboard analytics dan laporan bisnis komprehensif</p>
+            <a href="reports.html" class="module-button">Lihat Laporan</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ERP Sistem Logistik - Hayder Logistics System</p>
+    </div>
+  </footer>
+
+  <script>
+    // Simple dashboard data simulation
+    document.addEventListener('DOMContentLoaded', function() {
+      // Load stored data or use defaults
+      const dashboardData = JSON.parse(localStorage.getItem('erpDashboard')) || {
+        products: 150,
+        revenue: '2.5M',
+        employees: 25,
+        orders: 48
+      };
+      
+      // Update display
+      document.getElementById('totalProducts').textContent = dashboardData.products;
+      document.getElementById('monthlyRevenue').textContent = dashboardData.revenue;
+      document.getElementById('totalEmployees').textContent = dashboardData.employees;
+      document.getElementById('activeOrders').textContent = dashboardData.orders;
+    });
+  </script>
+</body>
+</html>

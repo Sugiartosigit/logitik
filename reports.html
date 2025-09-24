@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laporan & Analytics - ERP Sistem Logistik</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f8f9fa;
+      line-height: 1.6;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    
+    header {
+      background: linear-gradient(135deg, #2c3e50, #3498db);
+      color: white;
+      padding: 20px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .header-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .logo h1 {
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    
+    .breadcrumb {
+      color: #ecf0f1;
+      font-size: 0.9rem;
+    }
+    
+    .breadcrumb a {
+      color: #ecf0f1;
+      text-decoration: none;
+    }
+    
+    .breadcrumb a:hover {
+      text-decoration: underline;
+    }
+    
+    nav {
+      background-color: #34495e;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .nav-menu {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    nav a {
+      color: white;
+      text-decoration: none;
+      padding: 12px 20px;
+      border-radius: 6px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+    
+    nav a:hover, nav a.active {
+      background-color: #2c3e50;
+      transform: translateY(-2px);
+    }
+    
+    main {
+      padding: 40px 0;
+      min-height: calc(100vh - 200px);
+    }
+    
+    .page-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .page-header h2 {
+      color: #2c3e50;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .report-filters {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .filter-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      align-items: end;
+    }
+    
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .filter-group label {
+      font-weight: 600;
+      color: #2c3e50;
+      margin-bottom: 8px;
+    }
+    
+    .filter-group input,
+    .filter-group select {
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+    
+    .filter-group input:focus,
+    .filter-group select:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    
+    .btn {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+    }
+    
+    .btn-success {
+      background: linear-gradient(135deg, #27ae60, #229954);
+      color: white;
+    }
+    
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+    
+    .report-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+    
+    .report-card {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease;
+    }
+    
+    .report-card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .report-card-header {
+      padding: 20px;
+      background: linear-gradient(135deg, #3498db, #2980b9);
+      color: white;
+      text-align: center;
+    }
+    
+    .report-card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+    }
+    
+    .report-card-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+    
+    .report-card-content {
+      padding: 25px;
+    }
+    
+    .report-stat {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .report-stat:last-child {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+    
+    .stat-label {
+      color: #7f8c8d;
+      font-size: 0.9rem;
+    }
+    
+    .stat-value {
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    .chart-container {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .chart-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    .chart-placeholder {
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #ecf0f1, #bdc3c7);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #7f8c8d;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+    }
+    
+    .chart-legend {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .legend-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 4px;
+    }
+    
+    .summary-table {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .table-header {
+      background: linear-gradient(135deg, #34495e, #2c3e50);
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    
+    .table-header h3 {
+      font-size: 1.3rem;
+      font-weight: 600;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th {
+      background: #ecf0f1;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: #2c3e50;
+    }
+    
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    tr:hover {
+      background-color: #f8f9fa;
+    }
+    
+    .print-section {
+      background: white;
+      border-radius: 12px;
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    
+    .print-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+    
+    .export-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    
+    footer {
+      background-color: #2c3e50;
+      color: #ecf0f1;
+      text-align: center;
+      padding: 20px 0;
+      margin-top: 50px;
+    }
+    
+    @media (max-width: 768px) {
+      .filter-row {
+        grid-template-columns: 1fr;
+      }
+      
+      .report-cards {
+        grid-template-columns: 1fr;
+      }
+      
+      .chart-legend {
+        justify-content: flex-start;
+        gap: 15px;
+      }
+      
+      .print-header {
+        flex-direction: column;
+        gap: 15px;
+        align-items: stretch;
+      }
+      
+      .export-buttons {
+        justify-content: center;
+      }
+      
+      table {
+        font-size: 0.9rem;
+      }
+    }
+    
+    @media print {
+      header, nav, footer, .btn, .export-buttons {
+        display: none !important;
+      }
+      
+      body {
+        background: white;
+      }
+      
+      .container {
+        max-width: none;
+        padding: 0;
+      }
+      
+      .chart-container, .report-card, .summary-table, .print-section {
+        box-shadow: none;
+        border: 1px solid #ddd;
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="header-content">
+        <div class="logo">
+          <h1>📈 Laporan & Analytics</h1>
+        </div>
+        <div class="breadcrumb">
+          <a href="index.html">Dashboard</a> / Laporan
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container">
+      <div class="nav-menu">
+        <a href="index.html">📊 Dashboard</a>
+        <a href="inventory.html">📦 Inventory</a>
+        <a href="finance.html">💰 Keuangan</a>
+        <a href="hr.html">👥 SDM</a>
+        <a href="customer.html">🤝 Pelanggan</a>
+        <a href="supplier.html">🚚 Supplier</a>
+        <a href="reports.html" class="active">📈 Laporan</a>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+      <div class="page-header">
+        <h2>Laporan & Analytics</h2>
+        <p>Dashboard analytics dan laporan bisnis komprehensif</p>
+      </div>
+
+      <div class="report-filters">
+        <div class="filter-row">
+          <div class="filter-group">
+            <label for="reportType">Jenis Laporan</label>
+            <select id="reportType" onchange="updateReport()">
+              <option value="overview">Overview Bisnis</option>
+              <option value="financial">Laporan Keuangan</option>
+              <option value="inventory">Laporan Inventory</option>
+              <option value="sales">Laporan Penjualan</option>
+              <option value="hr">Laporan SDM</option>
+            </select>
+          </div>
+          <div class="filter-group">
+            <label for="startDate">Tanggal Mulai</label>
+            <input type="date" id="startDate" onchange="updateReport()">
+          </div>
+          <div class="filter-group">
+            <label for="endDate">Tanggal Akhir</label>
+            <input type="date" id="endDate" onchange="updateReport()">
+          </div>
+          <div class="filter-group">
+            <button class="btn btn-primary" onclick="generateReport()">Generate Laporan</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="report-cards" id="reportCards">
+        <!-- Report cards will be populated by JavaScript -->
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-header">
+          <h3 class="chart-title" id="chartTitle">Tren Penjualan Bulanan</h3>
+          <div class="export-buttons">
+            <button class="btn btn-success" onclick="exportChart()">Export Chart</button>
+          </div>
+        </div>
+        <div class="chart-placeholder" id="chartPlaceholder">
+          📊 Grafik akan ditampilkan di sini<br>
+          <small>Data visual berdasarkan filter yang dipilih</small>
+        </div>
+        <div class="chart-legend">
+          <div class="legend-item">
+            <div class="legend-color" style="background: #3498db;"></div>
+            <span>Pendapatan</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #e74c3c;"></div>
+            <span>Pengeluaran</span>
+          </div>
+          <div class="legend-item">
+            <div class="legend-color" style="background: #27ae60;"></div>
+            <span>Keuntungan</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="summary-table">
+        <div class="table-header">
+          <h3 id="tableTitle">Ringkasan Transaksi</h3>
+        </div>
+        <table id="summaryTable">
+          <thead>
+            <tr id="tableHeaders">
+              <!-- Headers will be populated by JavaScript -->
+            </tr>
+          </thead>
+          <tbody id="tableBody">
+            <!-- Data will be populated by JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
+      <div class="print-section">
+        <div class="print-header">
+          <h3>Export Laporan</h3>
+          <div class="export-buttons">
+            <button class="btn btn-primary" onclick="printReport()">🖨️ Print</button>
+            <button class="btn btn-success" onclick="exportPDF()">📄 Export PDF</button>
+            <button class="btn btn-success" onclick="exportExcel()">📊 Export Excel</button>
+          </div>
+        </div>
+        <div id="exportSummary">
+          <p><strong>Periode:</strong> <span id="exportPeriod">-</span></p>
+          <p><strong>Jenis Laporan:</strong> <span id="exportType">-</span></p>
+          <p><strong>Dibuat pada:</strong> <span id="exportDate">-</span></p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2025 ERP Sistem Logistik - Hayder Logistics System</p>
+    </div>
+  </footer>
+
+  <script>
+    // Load data from localStorage
+    function loadAllData() {
+      return {
+        inventory: JSON.parse(localStorage.getItem('inventory')) || [],
+        transactions: JSON.parse(localStorage.getItem('transactions')) || { income: [], expense: [] },
+        employees: JSON.parse(localStorage.getItem('employees')) || [],
+        customers: JSON.parse(localStorage.getItem('customers')) || [],
+        suppliers: JSON.parse(localStorage.getItem('suppliers')) || [],
+        orders: JSON.parse(localStorage.getItem('orders')) || [],
+        purchaseOrders: JSON.parse(localStorage.getItem('purchaseOrders')) || []
+      };
+    }
+
+    function formatCurrency(amount) {
+      return new Intl.NumberFormat('id-ID', {
+        style: 'currency',
+        currency: 'IDR',
+        minimumFractionDigits: 0
+      }).format(amount);
+    }
+
+    function formatDate(dateString) {
+      return new Date(dateString).toLocaleDateString('id-ID');
+    }
+
+    function getDateRange() {
+      const startDate = document.getElementById('startDate').value;
+      const endDate = document.getElementById('endDate').value;
+      
+      if (!startDate || !endDate) {
+        // Default to current month
+        const now = new Date();
+        const start = new Date(now.getFullYear(), now.getMonth(), 1);
+        const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+        
+        return {
+          start: start.toISOString().split('T')[0],
+          end: end.toISOString().split('T')[0]
+        };
+      }
+      
+      return { start: startDate, end: endDate };
+    }
+
+    function filterDataByDate(data, dateField) {
+      const { start, end } = getDateRange();
+      return data.filter(item => {
+        const itemDate = item[dateField];
+        return itemDate >= start && itemDate <= end;
+      });
+    }
+
+    function generateOverviewReport() {
+      const data = loadAllData();
+      const { start, end } = getDateRange();
+      
+      // Filter data by date range
+      const filteredIncome = filterDataByDate(data.transactions.income, 'date');
+      const filteredExpense = filterDataByDate(data.transactions.expense, 'date');
+      const filteredOrders = filterDataByDate(data.orders, 'date');
+      
+      const totalIncome = filteredIncome.reduce((sum, t) => sum + t.amount, 0);
+      const totalExpense = filteredExpense.reduce((sum, t) => sum + t.amount, 0);
+      const netProfit = totalIncome - totalExpense;
+      const totalOrders = filteredOrders.length;
+      
+      return {
+        cards: [
+          { title: 'Total Pendapatan', value: formatCurrency(totalIncome), icon: '💵', color: '#27ae60' },
+          { title: 'Total Pengeluaran', value: formatCurrency(totalExpense), icon: '💸', color: '#e74c3c' },
+          { title: 'Keuntungan Bersih', value: formatCurrency(netProfit), icon: '💰', color: netProfit >= 0 ? '#27ae60' : '#e74c3c' },
+          { title: 'Total Pesanan', value: totalOrders, icon: '📦', color: '#3498db' }
+        ],
+        table: {
+          title: 'Ringkasan Bisnis',
+          headers: ['Metrik', 'Nilai', 'Periode'],
+          data: [
+            ['Total Produk', data.inventory.length, `${formatDate(start)} - ${formatDate(end)}`],
+            ['Pelanggan Aktif', data.customers.filter(c => c.status === 'active').length, `${formatDate(start)} - ${formatDate(end)}`],
+            ['Supplier Aktif', data.suppliers.filter(s => s.status === 'active').length, `${formatDate(start)} - ${formatDate(end)}`],
+            ['Karyawan Aktif', data.employees.filter(e => e.status === 'active').length, `${formatDate(start)} - ${formatDate(end)}`]
+          ]
+        }
+      };
+    }
+
+    function generateFinancialReport() {
+      const data = loadAllData();
+      const { start, end } = getDateRange();
+      
+      const filteredIncome = filterDataByDate(data.transactions.income, 'date');
+      const filteredExpense = filterDataByDate(data.transactions.expense, 'date');
+      
+      const totalIncome = filteredIncome.reduce((sum, t) => sum + t.amount, 0);
+      const totalExpense = filteredExpense.reduce((sum, t) => sum + t.amount, 0);
+      const netProfit = totalIncome - totalExpense;
+      const profitMargin = totalIncome > 0 ? ((netProfit / totalIncome) * 100).toFixed(1) + '%' : '0%';
+      
+      return {
+        cards: [
+          { title: 'Pendapatan', value: formatCurrency(totalIncome), icon: '📈', color: '#27ae60' },
+          { title: 'Pengeluaran', value: formatCurrency(totalExpense), icon: '📉', color: '#e74c3c' },
+          { title: 'Profit Margin', value: profitMargin, icon: '📊', color: '#3498db' },
+          { title: 'ROI', value: '15.2%', icon: '💹', color: '#f39c12' }
+        ],
+        table: {
+          title: 'Detail Transaksi Keuangan',
+          headers: ['Tanggal', 'Deskripsi', 'Kategori', 'Tipe', 'Jumlah'],
+          data: [
+            ...filteredIncome.map(t => [formatDate(t.date), t.description, t.category, 'Pendapatan', formatCurrency(t.amount)]),
+            ...filteredExpense.map(t => [formatDate(t.date), t.description, t.category, 'Pengeluaran', formatCurrency(t.amount)])
+          ].sort((a, b) => new Date(b[0]) - new Date(a[0]))
+        }
+      };
+    }
+
+    function generateInventoryReport() {
+      const data = loadAllData();
+      
+      const lowStockItems = data.inventory.filter(item => item.stock <= 10).length;
+      const outOfStockItems = data.inventory.filter(item => item.stock === 0).length;
+      const totalValue = data.inventory.reduce((sum, item) => sum + (item.stock * item.price), 0);
+      const avgStockLevel = data.inventory.length > 0 
+        ? Math.round(data.inventory.reduce((sum, item) => sum + item.stock, 0) / data.inventory.length)
+        : 0;
+      
+      return {
+        cards: [
+          { title: 'Total Produk', value: data.inventory.length, icon: '📦', color: '#3498db' },
+          { title: 'Stok Rendah', value: lowStockItems, icon: '⚠️', color: '#f39c12' },
+          { title: 'Stok Habis', value: outOfStockItems, icon: '❌', color: '#e74c3c' },
+          { title: 'Nilai Inventory', value: formatCurrency(totalValue), icon: '💰', color: '#27ae60' }
+        ],
+        table: {
+          title: 'Detail Inventory',
+          headers: ['Kode', 'Nama Produk', 'Kategori', 'Stok', 'Harga', 'Total Nilai'],
+          data: data.inventory.map(item => [
+            item.code,
+            item.name,
+            item.category,
+            item.stock,
+            formatCurrency(item.price),
+            formatCurrency(item.stock * item.price)
+          ])
+        }
+      };
+    }
+
+    function generateSalesReport() {
+      const data = loadAllData();
+      const { start, end } = getDateRange();
+      
+      const filteredOrders = filterDataByDate(data.orders, 'date');
+      const totalSales = filteredOrders.reduce((sum, order) => sum + order.total, 0);
+      const avgOrderValue = filteredOrders.length > 0 ? totalSales / filteredOrders.length : 0;
+      const completedOrders = filteredOrders.filter(o => o.status === 'delivered').length;
+      const conversionRate = filteredOrders.length > 0 ? ((completedOrders / filteredOrders.length) * 100).toFixed(1) + '%' : '0%';
+      
+      return {
+        cards: [
+          { title: 'Total Penjualan', value: formatCurrency(totalSales), icon: '💰', color: '#27ae60' },
+          { title: 'Jumlah Pesanan', value: filteredOrders.length, icon: '📦', color: '#3498db' },
+          { title: 'Rata-rata Nilai Order', value: formatCurrency(avgOrderValue), icon: '📊', color: '#f39c12' },
+          { title: 'Conversion Rate', value: conversionRate, icon: '📈', color: '#9b59b6' }
+        ],
+        table: {
+          title: 'Detail Penjualan',
+          headers: ['No. Order', 'Pelanggan', 'Tanggal', 'Total', 'Status'],
+          data: filteredOrders.map(order => {
+            const customer = data.customers.find(c => c.id === order.customerId);
+            return [
+              order.orderNumber,
+              customer ? customer.name : 'Unknown',
+              formatDate(order.date),
+              formatCurrency(order.total),
+              order.status
+            ];
+          })
+        }
+      };
+    }
+
+    function generateHRReport() {
+      const data = loadAllData();
+      
+      const activeEmployees = data.employees.filter(e => e.status === 'active').length;
+      const onLeaveEmployees = data.employees.filter(e => e.status === 'leave').length;
+      const totalSalary = data.employees
+        .filter(e => e.status === 'active')
+        .reduce((sum, emp) => sum + emp.salary, 0);
+      const avgSalary = activeEmployees > 0 ? totalSalary / activeEmployees : 0;
+      
+      return {
+        cards: [
+          { title: 'Total Karyawan', value: data.employees.length, icon: '👥', color: '#3498db' },
+          { title: 'Karyawan Aktif', value: activeEmployees, icon: '✅', color: '#27ae60' },
+          { title: 'Sedang Cuti', value: onLeaveEmployees, icon: '🏖️', color: '#f39c12' },
+          { title: 'Total Gaji', value: formatCurrency(totalSalary), icon: '💰', color: '#e74c3c' }
+        ],
+        table: {
+          title: 'Detail Karyawan',
+          headers: ['ID', 'Nama', 'Posisi', 'Departemen', 'Gaji', 'Status'],
+          data: data.employees.map(emp => [
+            emp.employeeId,
+            emp.name,
+            emp.position,
+            emp.department,
+            formatCurrency(emp.salary),
+            emp.status === 'active' ? 'Aktif' : emp.status === 'leave' ? 'Cuti' : 'Tidak Aktif'
+          ])
+        }
+      };
+    }
+
+    function renderReportCards(cards) {
+      const container = document.getElementById('reportCards');
+      container.innerHTML = '';
+      
+      cards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.className = 'report-card';
+        cardElement.innerHTML = `
+          <div class="report-card-header">
+            <div class="report-card-icon">${card.icon}</div>
+            <div class="report-card-title">${card.title}</div>
+          </div>
+          <div class="report-card-content">
+            <div class="report-stat">
+              <span class="stat-label">Nilai</span>
+              <span class="stat-value" style="color: ${card.color}">${card.value}</span>
+            </div>
+          </div>
+        `;
+        container.appendChild(cardElement);
+      });
+    }
+
+    function renderTable(tableData) {
+      const tableTitle = document.getElementById('tableTitle');
+      const tableHeaders = document.getElementById('tableHeaders');
+      const tableBody = document.getElementById('tableBody');
+      
+      tableTitle.textContent = tableData.title;
+      
+      tableHeaders.innerHTML = '';
+      tableData.headers.forEach(header => {
+        const th = document.createElement('th');
+        th.textContent = header;
+        tableHeaders.appendChild(th);
+      });
+      
+      tableBody.innerHTML = '';
+      tableData.data.forEach(row => {
+        const tr = document.createElement('tr');
+        row.forEach(cell => {
+          const td = document.createElement('td');
+          td.textContent = cell;
+          tr.appendChild(td);
+        });
+        tableBody.appendChild(tr);
+      });
+    }
+
+    function updateReport() {
+      const reportType = document.getElementById('reportType').value;
+      const { start, end } = getDateRange();
+      
+      // Update export summary
+      document.getElementById('exportPeriod').textContent = `${formatDate(start)} - ${formatDate(end)}`;
+      document.getElementById('exportType').textContent = getReportTypeName(reportType);
+      document.getElementById('exportDate').textContent = formatDate(new Date().toISOString().split('T')[0]);
+      
+      let reportData;
+      switch (reportType) {
+        case 'financial':
+          reportData = generateFinancialReport();
+          document.getElementById('chartTitle').textContent = 'Tren Keuangan';
+          break;
+        case 'inventory':
+          reportData = generateInventoryReport();
+          document.getElementById('chartTitle').textContent = 'Analisis Inventory';
+          break;
+        case 'sales':
+          reportData = generateSalesReport();
+          document.getElementById('chartTitle').textContent = 'Tren Penjualan';
+          break;
+        case 'hr':
+          reportData = generateHRReport();
+          document.getElementById('chartTitle').textContent = 'Analisis SDM';
+          break;
+        default:
+          reportData = generateOverviewReport();
+          document.getElementById('chartTitle').textContent = 'Overview Bisnis';
+      }
+      
+      renderReportCards(reportData.cards);
+      renderTable(reportData.table);
+    }
+
+    function getReportTypeName(type) {
+      const types = {
+        'overview': 'Overview Bisnis',
+        'financial': 'Laporan Keuangan',
+        'inventory': 'Laporan Inventory',
+        'sales': 'Laporan Penjualan',
+        'hr': 'Laporan SDM'
+      };
+      return types[type] || 'Unknown';
+    }
+
+    function generateReport() {
+      updateReport();
+      alert('Laporan berhasil di-generate!');
+    }
+
+    function exportChart() {
+      alert('Fitur export chart akan tersedia dalam versi lengkap.');
+    }
+
+    function printReport() {
+      window.print();
+    }
+
+    function exportPDF() {
+      alert('Export PDF akan tersedia dalam versi lengkap. Gunakan Print untuk sementara.');
+    }
+
+    function exportExcel() {
+      alert('Export Excel akan tersedia dalam versi lengkap.');
+    }
+
+    function setDefaultDates() {
+      const now = new Date();
+      const start = new Date(now.getFullYear(), now.getMonth(), 1);
+      const end = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+      
+      document.getElementById('startDate').value = start.toISOString().split('T')[0];
+      document.getElementById('endDate').value = end.toISOString().split('T')[0];
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', function() {
+      setDefaultDates();
+      updateReport();
+    });
+  </script>
+</body>
+</html>
